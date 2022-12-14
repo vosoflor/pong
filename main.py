@@ -35,11 +35,7 @@ while not game_over:
     raqueta2.mover(pg.K_UP, pg.K_DOWN, pantalla_principal.get_height())
 
     # Método para mover pelota y que rebote dentro del campo de juego
-    pelota.mover(pantalla_principal.get_height(), pantalla_principal.get_width())
-
-    # Métodos para crear superficie de marcadores para cada jugador
-    marcador1 = pg.font.Font(None, 100).render(str(pelota.contador_derecha), 1, (255,255,255))
-    marcador2 = pg.font.Font(None, 100).render(str(pelota.contador_izquierda), 1, (255,255,255))
+    pelota.mover(pantalla_principal.get_height(), pantalla_principal.get_width(), raqueta1, raqueta2)
 
     # Método para asignar color a la pantalla y línea del medio
     pantalla_principal.fill((0, 128, 94))
@@ -51,6 +47,5 @@ while not game_over:
     raqueta2.dibujar(pantalla_principal)
 
     # Método para dibujar y mostrar lo parametrizado anteriormente
-    pantalla_principal.blit(marcador1, (150,10))
-    pantalla_principal.blit(marcador2, (550,10))
+    pelota.marcador(pantalla_principal)
     pg.display.flip()
