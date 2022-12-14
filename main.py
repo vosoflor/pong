@@ -24,7 +24,7 @@ while not game_over:
     
     # La función tick permite conocer los milisegundos que tarda entre cada fotograma
     # Cuando se incluye parámetro se está definiendo la cantidad máxima de fotogramas a imprimir en un segundo
-    milisegundos = cronometro.tick(300)
+    milisegundos = cronometro.tick(100)
 
     for evento in pg.event.get():
         if evento.type == pg.QUIT:
@@ -34,8 +34,8 @@ while not game_over:
     raqueta1.mover(pg.K_w, pg.K_s, pantalla_principal.get_height())
     raqueta2.mover(pg.K_UP, pg.K_DOWN, pantalla_principal.get_height())
 
-    # Método para mover pelota y que rebote dentro del campo de juego
-    pelota.mover(pantalla_principal.get_height(), pantalla_principal.get_width(), raqueta1, raqueta2)
+    # Método para mover pelota y que rebote cuando choque con las raquetas o asigne puntos si toca el borde del campo de juego
+    pelota.mover(pantalla_principal, raqueta1, raqueta2)
 
     # Método para asignar color a la pantalla y línea del medio
     pantalla_principal.fill((0, 128, 94))

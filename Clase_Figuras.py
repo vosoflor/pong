@@ -15,19 +15,25 @@ class Pelota:
     def dibujar(self, pantalla):
         pg.draw.circle(pantalla, self.color, (self.pos_x, self.pos_y), self.radio)
 
-    def mover(self, altura_pantalla, ancho_pantalla, raqueta1, raqueta2):
+    def mover(self, pantalla, raqueta1, raqueta2):
         self.pos_x += self.vx
         self.pos_y += self.vy
-        
-        if self.pos_x < (0 + self.radio):
+                
+        if self.pos_x - self.radio <= raqueta1.pos_x + raqueta1.w and self.pos_y >= raqueta1.pos_y and self.pos_y <= raqueta1.pos_y + raqueta1.h:
             self.vx *= -1
+        elif self.pos_x <= - self.radio:
             self.contador_izquierda += 1
-        if self.pos_x >= ancho_pantalla - self.radio:
+            self.posicion_inicial(pantalla)
+
+        if self.pos_x + self.radio >= raqueta2.pos_x and self.pos_y >= raqueta2.pos_y and self.pos_y <= raqueta2.pos_y + raqueta2.h:
             self.vx *= -1
+        elif self.pos_x - self.radio >= pantalla.get_width():
             self.contador_derecha += 1
-        if self.pos_y < (0 + self.radio) or self.pos_y >= altura_pantalla - self.radio:
+            self.posicion_inicial(pantalla)
+
+        if self.pos_y < (0 + self.radio) or self.pos_y >= pantalla.get_height() - self.radio:
             self.vy *= -1
-    
+
     def marcador(self, pantalla_principal):
         # Métodos para crear superficie de marcadores para cada jugador
         marcador1 = pg.font.Font(None, 100).render(str(self.contador_derecha), 1, (255,255,255))
@@ -36,6 +42,12 @@ class Pelota:
         # Método para dibujar y mostrar lo parametrizado anteriormente
         pantalla_principal.blit(marcador1, (150,10))
         pantalla_principal.blit(marcador2, (550,10))
+    
+    def posicion_inicial(self, pantalla):
+        self.pos_x = pantalla.get_width()/2
+        self.pos_y = pantalla.get_height()/2
+        self.vx *= -1
+        self.vy *= -1
 
 class Raqueta:
     
