@@ -36,12 +36,16 @@ class Pelota:
 
     def marcador(self, pantalla_principal):
         # Métodos para crear superficie de marcadores para cada jugador
+        #jugador1 = pg.font.Font(None, 50).render("Jugador 1", 1, (255,255,255))
         marcador1 = pg.font.Font(None, 100).render(str(self.contador_derecha), 1, (255,255,255))
+        #jugador2 = pg.font.Font(None, 50).render("Jugador 2", 1, (255,255,255))
         marcador2 = pg.font.Font(None, 100).render(str(self.contador_izquierda), 1, (255,255,255))        
         
         # Método para dibujar y mostrar lo parametrizado anteriormente
-        pantalla_principal.blit(marcador1, (150,10))
-        pantalla_principal.blit(marcador2, (550,10))
+        #pantalla_principal.blit(jugador1, (120,10))
+        pantalla_principal.blit(marcador1, (180,60))
+        #pantalla_principal.blit(jugador2, (520,10))
+        pantalla_principal.blit(marcador2, (580,60))
     
     def posicion_inicial(self, pantalla):
         self.pos_x = pantalla.get_width()/2
