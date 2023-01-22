@@ -1,20 +1,10 @@
 import Clase_Figuras
 import pygame as pg
-
-#Variables en mayúsuclas signifcan que son variables constantes
-ANCHO = 800
-ALTO = 600
-BLANCO = (255, 255, 255)
-VERDE = (0, 128, 94)
-ROJO = (255, 0, 0)
-NEGRO = (0, 0, 0)
+from tools import * #Para utilizar la clase inicializadora en donde están lo comun
 
 class Partida:
 
     def __init__(self):
-
-        # Para inicializar pygame
-        pg.init()
 
         # Para crear pantalla base y asignar un nombre
         self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
@@ -119,7 +109,7 @@ class Partida:
 
 class Menu:
     def __init__(self):
-        pg.init()
+
         self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
         pg.display.set_caption("Menu Pong")
         self.tasarefresco = pg.time.Clock()
@@ -138,25 +128,31 @@ class Menu:
             
             self.pantalla_principal.blit(self.imagenFondo, (0,0))
             nuevoJuego = self.font.render("Presione ENTER para jugar", 1, BLANCO)
-            self.pantalla_principal.blit(nuevoJuego, (150,250))
+            self.pantalla_principal.blit(nuevoJuego, (150, 200))
+            nuevoJuego = self.font.render("Presione R para ver puntuaciones", 1, BLANCO)
+            self.pantalla_principal.blit(nuevoJuego, (80,300))
 
             if pg.key.get_pressed()[pg.K_RETURN]:
                 game_over = True
                 return "Nuevo juego"
 
+            if pg.key.get_pressed()[pg.K_r]:
+                game_over = True
+                return "Score"
+
             pg.display.flip()
         
         pg.quit()
 
-class Resultado():
-    def __init__(self, marcador1, marcador2):
-        pg.init()
+class Resultado:
+    def __init__(self):
+
         self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
         pg.display.set_caption("Resultado Pong")
         self.tasarefresco = pg.time.Clock()
         
-        self.contador1 = marcador1
-        self.contador2 = marcador2
+        self.contador1 = 0
+        self.contador2 = 0
         
         self.imagenFondo = pg.image.load("images/portada.jpg")
         self.font = pg.font.Font("fonts/PressStart2P-Regular.ttf", 20)
@@ -201,3 +197,32 @@ class Resultado():
         
         pg.quit()
 
+    def recibirResultado(self, marcador1, marcador2):
+        self.contador1 = marcador1
+        self.contador2 = marcador2
+
+
+class Score:
+    
+    def __init__(self):
+
+        self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
+        pg.display.set_caption("Tabla de posiciones Pong")
+        self.tasarefresco = pg.time.Clock()
+        self.imagenFondo = pg.image.load("images/portada.jpg")
+        self.font = pg.font.Font("fonts/PressStart2P-Regular.ttf", 20)
+    
+    def bucle_pantalla(self):
+
+        game_over = False
+
+        while not game_over:
+            for evento in pg.event.get():
+                if evento.type == pg.QUIT:
+                    game_over = True
+            
+            self.pantalla_principal.blit(self.imagenFondo, (0,0))
+
+            pg.display.flip()
+        
+        pg.quit()
