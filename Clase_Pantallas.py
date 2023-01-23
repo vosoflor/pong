@@ -30,6 +30,12 @@ class Partida:
     
     def bucle_fotograma(self):
         
+        #Inicializa variables
+        self.temporizador = 15000
+        self.contador1 = 0
+        self.contador2 = 0
+        self.tasarefresco = pg.time.Clock()
+
         # Bucle para mantener la pantalla activa mientras se desarrolla el código
         game_over = False
 
@@ -43,11 +49,11 @@ class Partida:
             self.temporizador -= salto_tiempo
             if self.temporizador//1000 <= 0:
                 game_over = True
-                #return "Resultado"
 
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
                     game_over = True
+                    return True
             
             # Método para mover raqueta si las teclas definidas están presionadas
             self.raqueta1.mover(pg.K_w, pg.K_s, ALTO)
@@ -71,10 +77,6 @@ class Partida:
 
             # Método para dibujar y mostrar lo parametrizado anteriormente
             pg.display.flip()
-        
-        # Para finalizar pygame
-        return "Resultado"
-        pg.quit()
 
     def mostrar_jugador(self):
         
@@ -116,8 +118,12 @@ class Menu:
         
         self.imagenFondo = pg.image.load("images/portada.jpg")
         self.font = pg.font.Font("fonts/PressStart2P-Regular.ttf", 20)
+        self.music = pg.mixer.Sound("sounds/juego-de-tronos-1.mp3")
     
     def bucle_pantalla(self):
+
+        self.music.play(-1)
+
         game_over = False
 
         while not game_over:
@@ -125,6 +131,13 @@ class Menu:
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
                     game_over = True
+                    return True
+                if evento.type == pg.KEYDOWN:
+                    if evento.key == pg.K_RETURN:
+                        game_over = True
+                if evento.type == pg.KEYDOWN:
+                    if evento.key == pg.K_r:
+                        game_over = True
             
             self.pantalla_principal.blit(self.imagenFondo, (0,0))
             nuevoJuego = self.font.render("Presione ENTER para jugar", 1, BLANCO)
@@ -132,17 +145,9 @@ class Menu:
             nuevoJuego = self.font.render("Presione R para ver puntuaciones", 1, BLANCO)
             self.pantalla_principal.blit(nuevoJuego, (80,300))
 
-            if pg.key.get_pressed()[pg.K_RETURN]:
-                game_over = True
-                return "Nuevo juego"
-
-            if pg.key.get_pressed()[pg.K_r]:
-                game_over = True
-                return "Score"
-
             pg.display.flip()
         
-        pg.quit()
+        self.music.stop()
 
 class Resultado:
     def __init__(self):
@@ -165,6 +170,10 @@ class Resultado:
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
                     game_over = True
+                    return True
+                if evento.type == pg.KEYDOWN:
+                    if evento.key == pg.K_RETURN:
+                        game_over = True
             
             self.pantalla_principal.blit(self.imagenFondo, (0,0))
 
@@ -194,13 +203,10 @@ class Resultado:
             self.pantalla_principal.blit(resultado2, (300, 340))
 
             pg.display.flip()
-        
-        pg.quit()
 
     def recibirResultado(self, marcador1, marcador2):
         self.contador1 = marcador1
         self.contador2 = marcador2
-
 
 class Score:
     
@@ -220,9 +226,8 @@ class Score:
             for evento in pg.event.get():
                 if evento.type == pg.QUIT:
                     game_over = True
+                    return True
             
             self.pantalla_principal.blit(self.imagenFondo, (0,0))
 
             pg.display.flip()
-        
-        pg.quit()

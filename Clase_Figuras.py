@@ -10,6 +10,7 @@ class Pelota:
         self.color = color
         self.vx = vx
         self.vy = vy
+        self.music = pg.mixer.Sound("sounds/golpe-pelota.mp3")
     
     def dibujar(self, pantalla):
         pg.draw.circle(pantalla, self.color, (self.pos_x, self.pos_y), self.radio)
@@ -19,12 +20,14 @@ class Pelota:
         self.pos_y += self.vy
                 
         if self.pos_x - self.radio <= raqueta1.pos_x + raqueta1.w and self.pos_y >= raqueta1.pos_y and self.pos_y <= raqueta1.pos_y + raqueta1.h:
+            self.music.play()
             self.vx *= -1
         elif self.pos_x <= - self.radio:
             self.posicion_inicial(pantalla)
             return "left"
 
         if self.pos_x + self.radio >= raqueta2.pos_x and self.pos_y >= raqueta2.pos_y and self.pos_y <= raqueta2.pos_y + raqueta2.h:
+            self.music.play()
             self.vx *= -1
         elif self.pos_x - self.radio >= pantalla.get_width():
             self.posicion_inicial(pantalla)

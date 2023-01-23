@@ -9,8 +9,18 @@ class SceneController():
         self.records = Score()
 
     def start(self):
-        self.menu.bucle_pantalla()
-        self.juego.bucle_fotograma()
-        self.resultado.recibirResultado(self.juego.contador1, self.juego.contador2)
-        self.resultado.bucle_pantalla()
-        self.records.bucle_pantalla
+        
+        seguir = True
+        cerrar = False
+
+        while seguir:
+            cerrar = self.menu.bucle_pantalla()
+            if cerrar:
+                break
+            cerrar = self.juego.bucle_fotograma()
+            if cerrar:
+                break
+            self.resultado.recibirResultado(self.juego.contador1, self.juego.contador2)
+            cerrar = self.resultado.bucle_pantalla()
+            if cerrar:
+                break
