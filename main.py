@@ -6,7 +6,7 @@ pantalla = menu.bucle_pantalla()
 
 if pantalla == "Nuevo juego":   
     juego = Partida() #Creamos objeto de clase Partida
-    pantalla = juego.bucle_fotograma()
+    pantalla = juego.bucle_pantalla()
 
 if pantalla == "Resultado":   
     result = Resultado(juego.contador1, juego.contador2)

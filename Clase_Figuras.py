@@ -11,6 +11,7 @@ class Pelota:
         self.vx = vx
         self.vy = vy
         self.music = pg.mixer.Sound("sounds/golpe-pelota.mp3")
+
     
     def dibujar(self, pantalla):
         pg.draw.circle(pantalla, self.color, (self.pos_x, self.pos_y), self.radio)
@@ -44,7 +45,7 @@ class Pelota:
 
 class Raqueta:
     
-    def __init__(self, pos_x, pos_y, w = 20, h = 100, color = BLANCO, vx = 1, vy = 1):
+    def __init__(self, pos_x, pos_y, w = 30, h = 114, color = BLANCO, vx = 1, vy = 1):
         self.pos_x = pos_x
         self.pos_y = pos_y
         self.w = w
@@ -52,9 +53,16 @@ class Raqueta:
         self.color = color
         self.vx = vx
         self.vy = vy
+        self.imagenes = {"izquierda" : ["images/raquetas/electric00_izqda.png",
+                                        "images/raquetas/electric01_izqda.png",
+                                        "images/raquetas/electric02_izqda.png"],
+                        "derecha" : ["images/raquetas/electric00_drcha.png",
+                                    "images/raquetas/electric01_drcha.png",
+                                    "images/raquetas/electric02_drcha.png"]}
     
-    def dibujar(self, pantalla):
-        pg.draw.rect(pantalla, self.color, (self.pos_x, self.pos_y, self.w, self.h))
+    def dibujar(self, pantalla, lado, repeticion):
+        raqueta = pg.image.load(self.imagenes[lado][repeticion])
+        pantalla.blit(raqueta, (self.pos_x, self.pos_y, self.w, self.h))
 
     def mover(self, tecla_arriba, tecla_abajo, altura_pantalla):
 

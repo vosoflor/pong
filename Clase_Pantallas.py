@@ -4,19 +4,18 @@ from tools import * #Para utilizar la clase inicializadora en donde están lo co
 
 class Partida:
 
-    def __init__(self):
+    def __init__(self, pantalla, refresco):
 
-        # Para crear pantalla base y asignar un nombre
-        self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
-        pg.display.set_caption("Pong :D !!!")
+        # Para crear pantalla base
+        self.pantalla_principal = pantalla
         
         # Definir tasa de refresco de nuestro bucle de fotogramas (fotograma por segundo = FPS)
-        self.tasarefresco = pg.time.Clock()
+        self.tasarefresco = refresco
 
         # Para crear pelota y raquetas con parámetros mínimos requeridos; de los otros parámetros toma los valores por default
         self.pelota = Clase_Figuras.Pelota(ANCHO/2, ALTO/2, vy = 2)
         self.raqueta1 = Clase_Figuras.Raqueta(10, ALTO/2 - 50, vy = 5)
-        self.raqueta2 = Clase_Figuras.Raqueta(ANCHO - 20 - 10, ALTO/2 - 50, vy = 2)
+        self.raqueta2 = Clase_Figuras.Raqueta(ANCHO - 30 - 10, ALTO/2 - 57, vy = 2)
 
         #Crear variables para marcadores
         self.contador1 = 0
@@ -28,14 +27,18 @@ class Partida:
 
         self.temporizador = 15000
     
-    def bucle_fotograma(self):
+    def bucle_pantalla(self):
         
+        # Para asignar un nombre a la pantalla
+        pg.display.set_caption("Pong :D !!!")
+
         #Inicializa variables
         self.temporizador = 15000
         self.contador1 = 0
         self.contador2 = 0
         self.tasarefresco = pg.time.Clock()
-
+        contadorRaquetas = 0
+        
         # Bucle para mantener la pantalla activa mientras se desarrolla el código
         game_over = False
 
@@ -67,13 +70,18 @@ class Partida:
             for i in range(60, 601, 60):
                 pg.draw.line(self.pantalla_principal, BLANCO, (400, i), (400, i + 40), 10)
 
-            # Método para dibujar pelota, raquetas, jugadores, marcadores y temporizador
+            # Método para dibujar pelota, raquetas, jugadores, marcadores y temporizador 
             self.pelota.dibujar(self.pantalla_principal)
-            self.raqueta1.dibujar(self.pantalla_principal)
-            self.raqueta2.dibujar(self.pantalla_principal)
+            self.raqueta1.dibujar(self.pantalla_principal, "izquierda", contadorRaquetas)
+            self.raqueta2.dibujar(self.pantalla_principal, "derecha", contadorRaquetas)
             self.mostrar_jugador()
             cronometro = self.font.render(str(self.temporizador//1000)+"s", 1, BLANCO)
             self.pantalla_principal.blit(cronometro, (380,20))
+            
+            if contadorRaquetas != 2:
+                contadorRaquetas += 1
+            else:
+                contadorRaquetas = 0
 
             # Método para dibujar y mostrar lo parametrizado anteriormente
             pg.display.flip()
@@ -110,17 +118,18 @@ class Partida:
                 return NEGRO
 
 class Menu:
-    def __init__(self):
+    def __init__(self, pantalla, refresco):
 
-        self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
-        pg.display.set_caption("Menu Pong")
-        self.tasarefresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasarefresco = refresco
         
         self.imagenFondo = pg.image.load("images/portada.jpg")
         self.font = pg.font.Font("fonts/PressStart2P-Regular.ttf", 20)
         self.music = pg.mixer.Sound("sounds/juego-de-tronos-1.mp3")
     
     def bucle_pantalla(self):
+
+        pg.display.set_caption("Menu Pong")
 
         self.music.play(-1)
 
@@ -150,11 +159,10 @@ class Menu:
         self.music.stop()
 
 class Resultado:
-    def __init__(self):
+    def __init__(self, pantalla, refresco):
 
-        self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
-        pg.display.set_caption("Resultado Pong")
-        self.tasarefresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasarefresco = refresco
         
         self.contador1 = 0
         self.contador2 = 0
@@ -163,6 +171,8 @@ class Resultado:
         self.font = pg.font.Font("fonts/PressStart2P-Regular.ttf", 20)
     
     def bucle_pantalla(self):
+
+        pg.display.set_caption("Resultado Pong")
 
         game_over = False
 
@@ -210,15 +220,16 @@ class Resultado:
 
 class Score:
     
-    def __init__(self):
+    def __init__(self, pantalla, refresco):
 
-        self.pantalla_principal = pg.display.set_mode((ANCHO,ALTO))
-        pg.display.set_caption("Tabla de posiciones Pong")
-        self.tasarefresco = pg.time.Clock()
+        self.pantalla_principal = pantalla
+        self.tasarefresco = refresco
         self.imagenFondo = pg.image.load("images/portada.jpg")
         self.font = pg.font.Font("fonts/PressStart2P-Regular.ttf", 20)
     
     def bucle_pantalla(self):
+
+        pg.display.set_caption("Tabla de posiciones Pong")
 
         game_over = False
 
